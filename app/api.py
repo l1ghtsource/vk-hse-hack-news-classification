@@ -51,22 +51,3 @@ async def custom_swagger_ui_html():
 @app.get("/openapi.json", include_in_schema=False)
 async def get_openapi_json():
     return app.openapi()
-
-@app.post("/predict-form/", tags=["predict"])
-async def predict_form(text: str = Form(...)):
-    text = input_text.text
-    tag = get_tag(text)
-    keywords = 'слова, слова, слова'
-    sentiment_result = sentiment(text)
-    ner_results = ner(text)
-    
-    PER = ner_results['PER']
-    LOC = ner_results['LOC']
-    ORG = ner_results['ORG']
-
-    return {'tag': tag,
-            'keywords': keywords,
-            'sentiment_result': sentiment_result,
-            'person': PER,
-            'location': LOC,
-            'organization': ORG}
