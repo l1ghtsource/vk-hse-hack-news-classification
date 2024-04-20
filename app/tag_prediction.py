@@ -34,4 +34,5 @@ model_path = '/home/ubuntu/hack/FINAL_MODEL_CLASSIFICATION.bin'
 model = fasttext.load_model(model_path)
 
 def get_tag(text):
-    return model.predict(preprocess_sent(text), k=1)[0][0].split('__')[2]
+    result = model.predict(preprocess_sent(text), k=1)[0][0].split('__')[2]
+    return result
