@@ -1,5 +1,4 @@
 import streamlit as st
-import matplotlib.pyplot as plt
 from ner import ner
 from sentiment import sentiment
 from tag_prediction import get_tag
@@ -50,6 +49,3 @@ with st.container():
         
     st.sidebar.info("Решение команды MISIS DEMIDOVICH\n"
             "[Репозиторий GitHub](https://github.com/l1ghtsource/).")
-
-    if text:
-        pass
