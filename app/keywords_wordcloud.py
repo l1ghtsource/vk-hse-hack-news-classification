@@ -8,6 +8,8 @@ import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 
+from ner import normalize
+
 russian_stopwords = stopwords.words('russian')
 stopwords = set(russian_stopwords + ['также', 'однако', 'это', 'словам', 'кроме', 'Также', 'Однако', 'Это', 'Словам', 'Кроме'])
 
@@ -17,7 +19,7 @@ yake_kw = yake.KeywordExtractor()
 def show_keywords_cloud(text):
     
     KeyWords = yake_kw.extract_keywords(text) 
-    keywords = [kw for kw, _ in KeyWords] 
+    keywords = set([normalize(kw) for kw, _ in KeyWords])
     
     wordcloud = WordCloud(width = 400, height = 400,
                     background_color ='white',
