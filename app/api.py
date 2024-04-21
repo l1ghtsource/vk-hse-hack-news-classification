@@ -30,7 +30,7 @@ async def analyze_text(input_text: InputText):
     
     PER = set([res.title() for res in ner_results['PER']])
     LOC = set([res.title() for res in ner_results['LOC']])
-    ORG = set([res.title() for res in ner_results['ORG']])
+    ORG = set([res.upper() for res in ner_results['ORG']])
 
     return {'tag': tag,
             'summarization': summarization,
