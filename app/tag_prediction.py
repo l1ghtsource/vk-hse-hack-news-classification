@@ -1,6 +1,6 @@
 import nltk
+nltk.download('punkt')
 nltk.download('stopwords')
-
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 stop = stopwords.words('russian')
@@ -10,8 +10,10 @@ punkt= [p for p in punctuation] + ["`", "``" ,"''", "'"]
 
 import fasttext
 import pymorphy2
+from fasttext.FastText import _FastText
 
 lemmatizer = pymorphy2.MorphAnalyzer(path='/home/ubuntu/hack/pymorphy2-dicts-ru-2.4.404381.4453942/pymorphy2_dicts_ru/data', lang='ru')
+
 
 def tokenize(sent):
     try:
@@ -20,19 +22,22 @@ def tokenize(sent):
     except:
         return []
     
+
 def lemmatize(sent):
     try:
         return " ".join([lemmatizer.normal_forms(word)[0] for word in sent])
     except:
         return " "
 
+
 def preprocess_sent(sent):
     return lemmatize(tokenize(sent))
 
-model_path = '/home/ubuntu/hack/FINAL_MODEL_CLASSIFICATION.bin'
 
-model = fasttext.load_model(model_path)
+model_path = '/home/ubuntu/hack/optimized.model' # процесс обучения можно найти в vk-hse-classifier.ipynb
+ft_model = _FastText(model_path=model_path)
+
 
 def get_tag(text):
-    result = model.predict(preprocess_sent(text), k=1)[0][0].split('__')[2]
+    result = ft_model.predict(preprocess_sent(text), k=1)[0][0].split('__')[2]
     return result
