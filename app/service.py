@@ -2,22 +2,25 @@ import streamlit as st
 from ner import ner
 from sentiment import sentiment
 from tag_prediction import get_tag
+from keywords_wordcloud import show_keywords_cloud, get_keywords
+from summarization import summarize
 
 def get_answer(text):
     
     tag = get_tag(text)
     st.info(f'Категория: {tag}')
 
-    keywords = 'слова, слова, слова'    
-    st.info(f'Ключевые слова: {keywords}')
+    summarization = summarize(text, n_words=10)  
+    st.info(f'Суммаризация : {summarization}')
 
     sentiment_result = sentiment(text)
     st.info(f'Тональность: {sentiment_result}')
 
     ner_results = ner(text)
-    PER = ner_results['PER']
-    LOC = ner_results['LOC']
-    ORG = ner_results['ORG']
+    PER = set([res.title() for res in ner_results['PER']])
+    LOC = set([res.title() for res in ner_results['LOC']])
+    ORG = set([res.title() for res in ner_results['ORG'] if res not in LOC])
+    LOC = [x for x in LOC if x not in ORG]
 
     if PER:
         pers = ', '.join(PER)
@@ -31,9 +34,11 @@ def get_answer(text):
         orgs = ', '.join(ORG)
         st.info(f'Организации и компании: {orgs}')
 
+    show_keywords_cloud(text)
+
 st.set_page_config(
     page_title='Классификатор новостей',
-    page_icon=':paper:',
+    page_icon=':news:',
     layout='wide'
 )
 
@@ -48,4 +53,4 @@ with st.container():
             get_answer(text)
         
     st.sidebar.info("Решение команды MISIS DEMIDOVICH\n"
-            "[Репозиторий GitHub](https://github.com/l1ghtsource/).")
+            "[Репозиторий GitHub](https://github.com/l1ghtsource/vk-hse-hack-news-classification).")
