@@ -19,7 +19,7 @@ def get_answer(text):
     ner_results = ner(text)
     PER = set([res.title() for res in ner_results['PER']])
     LOC = set([res.title() for res in ner_results['LOC']])
-    ORG = set([res.title() for res in ner_results['ORG'] if res not in LOC])
+    ORG = set([res.upper() for res in ner_results['ORG'] if res not in LOC])
     LOC = [x for x in LOC if x not in ORG]
 
     if PER:
