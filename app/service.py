@@ -65,8 +65,14 @@ with st.container():
             link = st.text_area('Введите ссылку на news.mail.ru:', '')
             submitted = st.form_submit_button('Submit')
             if submitted:
-                text = parse(link)
-                get_answer(text)
+                if 'mail.ru' in link:
+                        text = parse(link)
+                        if text == 'До связи':
+                            st.info('Не удалось спарсить')
+                        else:
+                            get_answer(text)
+                else:
+                    st.info('Ссылка должна быть на news.mail.ru')
             
     st.sidebar.info("Решение команды MISIS DEMIDOVICH\n"
             "[Репозиторий GitHub](https://github.com/l1ghtsource/vk-hse-hack-news-classification).")
